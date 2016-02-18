@@ -1,0 +1,25 @@
+{
+  "name": "ReactFluxApp",
+  "version": "1.0.0",
+  "author": "naufal",
+  "description": "",
+  "main": "src/app.js",
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.5.1",
+    "bootstrap": "^3.3.6",
+    "browserify": "^13.0.0",
+    "flux": "^2.1.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^2.3.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-open": "^1.0.0",
+    "jquery": "^2.2.0",
+    "react": "^0.14.7",
+    "react-router": "^2.0.0",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
