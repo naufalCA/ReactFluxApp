@@ -1,0 +1,15 @@
+{
+  "name": "ReactFluxApp",
+  "description": "",
+  "main": "src/app.js",
+  "authors": [
+    "naufal"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/naufalCA/ReactFluxApp",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "react": "^0.14.7",
+    "flux": "^2.1.1"
+  }
+}
