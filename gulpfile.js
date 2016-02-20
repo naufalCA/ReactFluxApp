@@ -7,20 +7,8 @@ var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var concat = require('gulp-concat');
 var lint = require('gulp-eslint');
-var config = {
-  port: 9005,
-  devBaseUrl: 'http://localhost',
-  paths:{
-    html: './src/*.html',
-    js: './src/**/*.js',
-    css: [
-      'node_modules/bootstrap/dist/css/bootstrap.min.css',
-      'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
-    ],
-    mainJs: './src/app.js',
-    dist: './dist'
-  }
-}
+var config = require('./config');
+
 
 //Start a local server
 gulp.task('connect',function(){
@@ -62,8 +50,17 @@ gulp.task('js',function(){
 gulp.task('css',function(){
     gulp.src(config.paths.css)
         .pipe(concat('bundle.css'))
-        .pipe(gulp.dest(config.paths.dist + '/css'))
+        .pipe(gulp.dest(config.paths.dist + '/css'));
 })
+gulp.task('images', function(){
+    gulp.src(config.paths.img)
+        .pipe(gulp.dest(config.paths.dist + '/images'))
+        .pipe(connect.reload());
+
+    gulp.src('./src/favicon.ico')
+        .pipe(gulp.dest(config.paths.dist));
+})
+
 
 gulp.task('lint', function(){
    return gulp.src(config.paths.js)
@@ -73,4 +70,4 @@ gulp.task('lint', function(){
               .pipe(lint.format());
 })
 
-gulp.task('default', ['html','js','css','lint','open','watch']);
+gulp.task('default', ['html','js','css','images','lint','open','watch']);
