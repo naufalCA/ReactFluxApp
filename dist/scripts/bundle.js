@@ -47695,7 +47695,37 @@ var App = React.createClass({displayName: "App",
 });
 
 module.exports = App;
-},{"./common/Header":206,"jquery":3,"react":200,"react-router":30}],204:[function(require,module,exports){
+},{"./common/Header":208,"jquery":3,"react":200,"react-router":30}],204:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var TextInput = require('../common/TextInput');
+var AuthorForm = React.createClass({displayName: "AuthorForm",
+  componentWillMount: function(){
+    console.log(this.props);
+  },
+  render: function(){
+    return (
+        React.createElement("form", {id: "authorForm"}, 
+            React.createElement(TextInput, {
+              name: "firstName", 
+              label: "First Name", 
+              value: this.props.author.firstName, 
+              onChange: this.props.onChange}), 
+            React.createElement("br", null), 
+            React.createElement(TextInput, {
+              name: "lastName", 
+              label: "Last Name", 
+              value: this.props.author.lastName, 
+              onChange: this.props.onChange}), 
+            React.createElement("br", null), 
+            React.createElement("input", {type: "submit", value: "Save", className: "btn btn-default"})
+        )
+    );
+  }
+});
+
+module.exports = AuthorForm;
+},{"../common/TextInput":209,"react":200}],205:[function(require,module,exports){
 "use strict";
 var React = require('react');
 
@@ -47730,9 +47760,11 @@ var AuthorsList = React.createClass({displayName: "AuthorsList",
 });
 
 module.exports = AuthorsList;
-},{"react":200}],205:[function(require,module,exports){
+},{"react":200}],206:[function(require,module,exports){
 "use strict";
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 var AuthorApi = require('../../api/AuthorApi');
 var AuthorsList = require('./AuthorsList');
 var Authors = React.createClass({displayName: "Authors",
@@ -47752,6 +47784,7 @@ var Authors = React.createClass({displayName: "Authors",
         return (
             React.createElement("div", null, 
                 React.createElement("h1", null, "Authors"), 
+                React.createElement(Link, {to: "addAuthor", className: "btn btn-default"}, "Add User"), 
                 React.createElement(AuthorsList, {authors: this.state.authors})
             )
         );
@@ -47759,7 +47792,34 @@ var Authors = React.createClass({displayName: "Authors",
 });
 
 module.exports = Authors;
-},{"../../api/AuthorApi":208,"./AuthorsList":204,"react":200}],206:[function(require,module,exports){
+},{"../../api/AuthorApi":211,"./AuthorsList":205,"react":200,"react-router":30}],207:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var AuthorForm = require('./AuthorForm');
+var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
+  getInitialState: function(){
+    return {
+      author: {id: '', firstName: '', lastName: ''}
+    };
+  },
+  _setAuthorState: function(event){
+    var field = event.target.name;
+    var value = event.target.value;
+    this.state.author[field] = value;
+    return this.setState({author: this.state.author});
+  },
+  render: function(){
+    return (
+      React.createElement("div", {id: "author-container"}, 
+        React.createElement("h1", null, "Manage Authors"), 
+        React.createElement(AuthorForm, {author: this.state.author, onChange: this._setAuthorState})
+      )
+    );
+  }
+});
+
+module.exports = ManageAuthorPage;
+},{"./AuthorForm":204,"react":200}],208:[function(require,module,exports){
 'use strict';
 var React = require('react');
 var Router = require('react-router');
@@ -47784,7 +47844,44 @@ var Header = React.createClass({displayName: "Header",
 });
 
 module.exports = Header;
-},{"react":200,"react-router":30}],207:[function(require,module,exports){
+},{"react":200,"react-router":30}],209:[function(require,module,exports){
+"use strict";
+var React = require('react');
+
+var TextInput = React.createClass({displayName: "TextInput",
+  propTypes: {
+    name: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired,
+    onChange: React.PropTypes.func.isRequired,
+    placeholder: React.PropTypes.string,
+    value: React.PropTypes.string,
+    errors: React.PropTypes.string
+  },
+
+  render: function(){
+    var wrapperClass = "form-group";
+    if(this.props.errors && this.props.errors.lenght > 0){
+      wrapperClass += " has-error";
+    }
+    return (
+      React.createElement("div", {className: wrapperClass}, 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("label", {htmlFor: this.props.name}, this.props.label), 
+          React.createElement("input", {name: this.props.name, type: "text", 
+          placeholder: this.props.placeholder, 
+          className: "form-control", 
+          ref: this.props.name, 
+          value: this.props.value, 
+          onChange: this.props.onChange}), 
+          React.createElement("div", {className: "input"}, this.props.errors)
+        )
+      )
+    );
+  }
+});
+
+module.exports = TextInput;
+},{"react":200}],210:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -47802,7 +47899,7 @@ var Home = React.createClass({displayName: "Home",
 });
 
 module.exports = Home;
-},{"react":200,"react-router":30}],208:[function(require,module,exports){
+},{"react":200,"react-router":30}],211:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -47854,7 +47951,7 @@ var AuthorApi = {
 
 module.exports = AuthorApi;
 
-},{"./authorData":209,"lodash":4}],209:[function(require,module,exports){
+},{"./authorData":212,"lodash":4}],212:[function(require,module,exports){
 module.exports = {
 	authors: 
 	[
@@ -47876,7 +47973,7 @@ module.exports = {
 	]
 };
 
-},{}],210:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -47884,7 +47981,7 @@ var routes = require('./routes');
 Router.run(routes, function(Handler){
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 });
-},{"./routes":211,"react":200,"react-router":30}],211:[function(require,module,exports){
+},{"./routes":214,"react":200,"react-router":30}],214:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -47897,6 +47994,7 @@ var routes = (
       React.createElement(DefaultRoute, {handler: require('./Components/homePage')}), 
       React.createElement(Route, {name: "authors", handler: require('./Components/authors/AuthorsPage')}), 
       React.createElement(Route, {name: "about", handler: require('./Components/about/AboutPage')}), 
+      React.createElement(Route, {name: "addAuthor", path: "author", handler: require('./Components/authors/ManageAuthorPage')}), 
       React.createElement(NotFoundRoute, {handler: require('./Components/NotFoundPage')}), 
       React.createElement(Redirect, {from: "about-us", to: "about"}), 
       React.createElement(Redirect, {from: "about/*", to: "about"})
@@ -47904,4 +48002,4 @@ var routes = (
 );
 
 module.exports = routes;
-},{"./Components/NotFoundPage":201,"./Components/about/AboutPage":202,"./Components/app":203,"./Components/authors/AuthorsPage":205,"./Components/homePage":207,"react":200,"react-router":30}]},{},[210]);
+},{"./Components/NotFoundPage":201,"./Components/about/AboutPage":202,"./Components/app":203,"./Components/authors/AuthorsPage":206,"./Components/authors/ManageAuthorPage":207,"./Components/homePage":210,"react":200,"react-router":30}]},{},[213]);
